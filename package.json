@@ -1,7 +1,7 @@
 {
-  "name": "express-typescript-boilerplate",
+  "name": "BookingBEv2",
   "version": "1.0.9",
-  "description": "An Express boilerplate backend",
+  "description": "BookingBEv2",
   "main": "index.ts",
   "private": true,
   "scripts": {
