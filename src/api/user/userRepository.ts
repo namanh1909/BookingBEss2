@@ -1,16 +1,18 @@
-import { User } from '@/api/user/userModel';
+import { ObjectId } from 'mongodb';
 
-export const users: User[] = [
-  { id: 1, name: 'Alice', email: 'alice@example.com', age: 42, createdAt: new Date(), updatedAt: new Date() },
-  { id: 2, name: 'Bob', email: 'bob@example.com', age: 21, createdAt: new Date(), updatedAt: new Date() },
-];
+import { User, UserType } from '@/api/user/userModel';
 
 export const userRepository = {
-  findAllAsync: async (): Promise<User[]> => {
-    return users;
+  findAllAsync: async (): Promise<UserType[]> => {
+    return User.find();
   },
 
-  findByIdAsync: async (id: number): Promise<User | null> => {
-    return users.find((user) => user.id === id) || null;
+  findByIdAsync: async (id: string): Promise<UserType | null> => {
+    console.log('id', id);
+    return User.findById(new ObjectId(id));
+  },
+
+  findByEmailAsync: async (email: string): Promise<UserType | null> => {
+    return User.findOne({ email });
   },
 };

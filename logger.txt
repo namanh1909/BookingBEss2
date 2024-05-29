@@ -1,0 +1,70 @@
+{"level":30,"time":1716970690912,"controller":"ControllerName","action":"ActionName","msg":"Log message"}
+{"level":30,"time":1716970690923,"msg":"Server (development) running on port http://localhost:8080"}
+{"level":30,"time":1716970691696,"controller":"ControllerName","action":"ActionName","msg":"Log message"}
+{"level":30,"time":1716970691706,"msg":"Server (development) running on port http://localhost:8080"}
+{"level":30,"time":1716970692299,"msg":"Connected to MongoDB successfully"}
+{"level":30,"time":1716970727509,"controller":"UserController","action":"getUserList","msg":"Log message"}
+{"level":30,"time":1716970727520,"msg":"Server (development) running on port http://localhost:8080"}
+{"level":30,"time":1716970728125,"msg":"Connected to MongoDB successfully"}
+{"level":30,"time":1716970729582,"controller":"UserController","action":"getUserList","msg":"Log message"}
+{"level":30,"time":1716970729593,"msg":"Server (development) running on port http://localhost:8080"}
+{"level":30,"time":1716970730207,"msg":"Connected to MongoDB successfully"}
+{"level":30,"time":1716970746274,"controller":"ControllerName","action":"ActionName","msg":"Log message"}
+{"level":30,"time":1716970746284,"msg":"Server (development) running on port http://localhost:8080"}
+{"level":30,"time":1716970746936,"msg":"Connected to MongoDB successfully"}
+{"level":30,"time":1716970765325,"controller":"ControllerName","action":"ActionName","msg":"Log message"}
+{"level":30,"time":1716970765325,"controller":"ControllerName","action":"ActionName","msg":"Log message"}
+{"level":30,"time":1716970765335,"msg":"Server (development) running on port http://localhost:8080"}
+{"level":30,"time":1716970765994,"msg":"Connected to MongoDB successfully"}
+{"level":30,"time":1716970787379,"msg":"Server (development) running on port http://localhost:8080"}
+{"level":30,"time":1716970788022,"msg":"Connected to MongoDB successfully"}
+{"level":30,"time":1716970974080,"msg":"Server (development) running on port http://localhost:8080"}
+{"level":30,"time":1716970974753,"msg":"Connected to MongoDB successfully"}
+{"level":30,"time":1716971032325,"msg":"Server (development) running on port http://localhost:8080"}
+{"level":30,"time":1716971032973,"msg":"Connected to MongoDB successfully"}
+{"level":30,"time":1716971046471,"msg":"Server (development) running on port http://localhost:8080"}
+{"level":30,"time":1716971047168,"msg":"Connected to MongoDB successfully"}
+{"level":30,"time":1716971166378,"msg":"Server (development) running on port http://localhost:8080"}
+{"level":30,"time":1716971167056,"msg":"Connected to MongoDB successfully"}
+{"level":30,"time":1716971180572,"msg":"Server (development) running on port http://localhost:8080"}
+{"level":30,"time":1716971181185,"msg":"Connected to MongoDB successfully"}
+{"level":30,"time":1716971207303,"msg":"Server (development) running on port http://localhost:8080"}
+{"level":30,"time":1716971207933,"msg":"Connected to MongoDB successfully"}
+{"level":30,"time":1716971219323,"msg":"Server (development) running on port http://localhost:8080"}
+{"level":30,"time":1716971219920,"msg":"Connected to MongoDB successfully"}
+{"level":30,"time":1716971286528,"msg":"Server (development) running on port http://localhost:8080"}
+{"level":30,"time":1716971287118,"msg":"Connected to MongoDB successfully"}
+{"level":30,"time":1716971482311,"msg":"Server (development) running on port http://localhost:8080"}
+{"level":30,"time":1716971483007,"msg":"Connected to MongoDB successfully"}
+{"level":30,"time":1716971483763,"msg":"Server (development) running on port http://localhost:8080"}
+{"level":30,"time":1716971484764,"msg":"Server (development) running on port http://localhost:8080"}
+{"level":30,"time":1716971485361,"msg":"Connected to MongoDB successfully"}
+{"level":30,"time":1716971503507,"msg":"Server (development) running on port http://localhost:8080"}
+{"level":30,"time":1716971504693,"msg":"Server (development) running on port http://localhost:8080"}
+{"level":30,"time":1716971505286,"msg":"Connected to MongoDB successfully"}
+{"level":30,"time":1716971526609,"msg":"Server (development) running on port http://localhost:8080"}
+{"level":30,"time":1716971527524,"msg":"Connected to MongoDB successfully"}
+{"level":30,"time":1716971542426,"msg":"Server (development) running on port http://localhost:8080"}
+{"level":30,"time":1716971543033,"msg":"Connected to MongoDB successfully"}
+{"level":30,"time":1716971550082,"msg":"Server (development) running on port http://localhost:8080"}
+{"level":30,"time":1716971550719,"msg":"Connected to MongoDB successfully"}
+{"level":30,"time":1716971555229,"msg":"Server (development) running on port http://localhost:8080"}
+{"level":30,"time":1716971558081,"msg":"Connected to MongoDB successfully"}
+{"level":30,"time":1716971566098,"msg":"Server (development) running on port http://localhost:8080"}
+{"level":30,"time":1716971566717,"msg":"Connected to MongoDB successfully"}
+{"level":30,"time":1716971576575,"msg":"Server (development) running on port http://localhost:8080"}
+{"level":30,"time":1716971577176,"msg":"Connected to MongoDB successfully"}
+{"level":30,"time":1716971590218,"msg":"Server (development) running on port http://localhost:8080"}
+{"level":30,"time":1716971590815,"msg":"Connected to MongoDB successfully"}
+{"level":30,"time":1716971593623,"msg":"Server (development) running on port http://localhost:8080"}
+{"level":30,"time":1716971594237,"msg":"Connected to MongoDB successfully"}
+{"level":30,"time":1716971608675,"msg":"Server (development) running on port http://localhost:8080"}
+{"level":30,"time":1716971609304,"msg":"Connected to MongoDB successfully"}
+{"level":30,"time":1716971644504,"msg":"Server (development) running on port http://localhost:8080"}
+{"level":30,"time":1716971645122,"msg":"Connected to MongoDB successfully"}
+{"level":30,"time":1716971648216,"msg":"Server (development) running on port http://localhost:8080"}
+{"level":30,"time":1716971648785,"msg":"Connected to MongoDB successfully"}
+{"level":30,"time":1716971678700,"msg":"Server (development) running on port http://localhost:8080"}
+{"level":30,"time":1716971679288,"msg":"Connected to MongoDB successfully"}
+{"level":30,"time":1716971687167,"msg":"Server (development) running on port http://localhost:8080"}
+{"level":30,"time":1716971687861,"msg":"Connected to MongoDB successfully"}
