@@ -13,10 +13,10 @@ RUN npm i --force
 COPY . .
 
 # Build the TypeScript files
-RUN npm run build
+RUN npm run clean
 
 # Expose port 8080
 EXPOSE 8080
 
 # Start the app
-CMD npm run start
+CMD npm run dev
