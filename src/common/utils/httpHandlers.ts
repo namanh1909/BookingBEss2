@@ -3,7 +3,8 @@ import { StatusCodes } from 'http-status-codes';
 import jwt from 'jsonwebtoken';
 import { ZodError, ZodSchema } from 'zod';
 
-import { ResponseStatus, ServiceResponse } from '@/common/models/serviceResponse';
+import { ServiceResponse } from '@/common/models/serviceResponse';
+import { ResponseStatus } from '@/enums';
 
 export const handleServiceResponse = (serviceResponse: ServiceResponse<any>, response: Response) => {
   return response.status(serviceResponse.statusCode).send(serviceResponse);

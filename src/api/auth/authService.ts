@@ -3,7 +3,8 @@ import { StatusCodes } from 'http-status-codes';
 import jwt from 'jsonwebtoken';
 
 import { userRepository } from '@/api/user/userRepository';
-import { ResponseStatus, ServiceResponse } from '@/common/models/serviceResponse';
+import { ServiceResponse } from '@/common/models/serviceResponse';
+import { ResponseStatus } from '@/enums';
 import { logger } from '@/server';
 
 import { User } from '../user/userModel';
@@ -22,7 +23,7 @@ export const authService = {
         );
       }
 
-      const checkPassword = await bcrypt.compare(password, user.password);
+      const checkPassword = await bcrypt.compare(password, user.password as string);
       if (!checkPassword) {
         return new ServiceResponse<ILoginResponse>(
           ResponseStatus.Failed,
@@ -77,7 +78,7 @@ export const authService = {
         );
       }
 
-      const validPass = await bcrypt.compare(password, user.password);
+      const validPass = await bcrypt.compare(password, user.password as string);
       if (!validPass) {
         return new ServiceResponse<ILoginResponse>(
           ResponseStatus.Failed,
@@ -87,18 +88,17 @@ export const authService = {
         );
       }
 
-      const token = jwt.sign({ _id: user._id }, process.env.TOKEN_SECRET || 'default_secret', { expiresIn: '1d' });
-      const refreshToken = jwt.sign({ _id: user._id }, process.env.TOKEN_SECRET || 'default_secret', {
-        expiresIn: '2d',
-      });
+      const tokenResponse = {
+        token: jwt.sign({ _id: user._id }, process.env.TOKEN_SECRET || 'default_secret', { expiresIn: '1d' }),
+        refreshToken: jwt.sign({ _id: user._id }, process.env.TOKEN_SECRET || 'default_secret', {
+          expiresIn: '2d',
+        }),
+      };
 
       return new ServiceResponse<ILoginResponse>(
         ResponseStatus.Success,
         'Login successfully',
-        {
-          token,
-          refreshToken,
-        },
+        tokenResponse,
         StatusCodes.OK
       );
     } catch (ex) {
@@ -138,22 +138,15 @@ export const authService = {
       const salt = await bcrypt.genSalt(10);
       const hashPassword = await bcrypt.hash(password, salt);
 
-      const user = new User({
+      const newUser = userRepository.createUserAsync({
         name,
         email,
         password: hashPassword,
         Role: 'client-user',
         createAt: new Date(),
         updatedAt: new Date(),
-        phoneNumber: '',
-        Date: '',
-        Gender: '',
-        Avatar: '',
-        IdDoctor: '',
-        age: '',
       });
-      await user.save();
-      return new ServiceResponse<any>(ResponseStatus.Success, 'User registered successfully', user, StatusCodes.OK);
+      return new ServiceResponse<any>(ResponseStatus.Success, 'User registered successfully', newUser, StatusCodes.OK);
     } catch (ex) {
       const errorMessage = `Error during registration: ${(ex as Error).message}`;
       logger.error(errorMessage);

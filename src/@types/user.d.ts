@@ -1,15 +1,15 @@
 type IUser = {
   _id?: string;
-  password?: any;
-  name: string;
-  email: string;
+  password?: string;
+  name?: string;
+  email?: string;
   phoneNumber?: string;
   Date?: string;
   Gender?: string;
   Avatar?: string;
-  Role: string;
+  Role?: string;
   IdDoctor?: string;
   age?: string;
-  createAt?: Date;
-  updatedAt: Date;
+  createAt?: T;
+  updatedAt?: T;
 };

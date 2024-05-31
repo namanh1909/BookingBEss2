@@ -1,9 +1,6 @@
 import { z } from 'zod';
 
-export enum ResponseStatus {
-  Success,
-  Failed,
-}
+import { ResponseStatus } from '@/enums';
 
 export class ServiceResponse<T = null> {
   success: boolean;

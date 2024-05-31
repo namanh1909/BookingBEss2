@@ -16,7 +16,8 @@
     "test:dev": "vitest dev",
     "test:cov": "vitest run --coverage",
     "release": "semantic-release",
-    "prepare": "husky"
+    "prepare": "husky",
+    "format-lint": "npx eslint . --fix"
   },
   "dependencies": {
     "@asteasolutions/zod-to-openapi": "^7.0.0",
@@ -75,7 +76,7 @@
     "**/*": "npm run format",
     "**/*.{js,ts}": "npm run lint:fix"
   },
-  "author": "Edwin Hernandez",
-  "repository": "edwinhern/express-typescript-2024",
+  "author": "Nam Anh",
+  "repository": "Doctor Booking BE v2",
   "license": "ISC"
 }

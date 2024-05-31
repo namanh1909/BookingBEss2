@@ -3,7 +3,8 @@ import jwt from 'jsonwebtoken';
 
 import { UserType } from '@/api/user/userModel';
 import { userRepository } from '@/api/user/userRepository';
-import { ResponseStatus, ServiceResponse } from '@/common/models/serviceResponse';
+import { ServiceResponse } from '@/common/models/serviceResponse';
+import { ResponseStatus } from '@/enums';
 import { logger } from '@/server';
 
 export const userService = {
@@ -47,6 +48,25 @@ export const userService = {
       return new ServiceResponse<typeof user>(ResponseStatus.Success, 'User found', user, StatusCodes.OK);
     } catch (ex) {
       const errorMessage = `Error finding user by token: ${(ex as Error).message}`;
+      logger.error(errorMessage);
+      return new ServiceResponse(ResponseStatus.Failed, errorMessage, undefined, StatusCodes.INTERNAL_SERVER_ERROR);
+    }
+  },
+
+  updateInfo: async (id: string, userInfo: IUser): Promise<ServiceResponse<UserType | undefined>> => {
+    try {
+      const updatedUser = await userRepository.updateUserAsync(id, userInfo);
+      if (!updatedUser) {
+        return new ServiceResponse(ResponseStatus.Failed, 'User not found', undefined, StatusCodes.NOT_FOUND);
+      }
+      return new ServiceResponse<typeof updatedUser>(
+        ResponseStatus.Success,
+        'User info updated successfully',
+        updatedUser,
+        StatusCodes.OK
+      );
+    } catch (ex) {
+      const errorMessage = `Error updating user info with id ${id}: ${(ex as Error).message}`;
       logger.error(errorMessage);
       return new ServiceResponse(ResponseStatus.Failed, errorMessage, undefined, StatusCodes.INTERNAL_SERVER_ERROR);
     }

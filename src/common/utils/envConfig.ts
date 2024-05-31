@@ -9,7 +9,7 @@ export const env = cleanEnv(process.env, {
   PORT: port({ devDefault: testOnly(8080) }),
   MONGO_URI: str(),
   JWT_SECRET: str(),
-  CORS_ORIGIN: str({ devDefault: testOnly('http://localhost:8080') }),
+  CORS_ORIGIN: str({ devDefault: testOnly('http://localhost:3030') }),
   COMMON_RATE_LIMIT_MAX_REQUESTS: num({ devDefault: testOnly(1000) }),
   COMMON_RATE_LIMIT_WINDOW_MS: num({ devDefault: testOnly(1000) }),
 });

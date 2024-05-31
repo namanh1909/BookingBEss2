@@ -21,7 +21,7 @@ export const authRouter: Router = (() => {
   authRegistry.registerPath({
     method: 'post',
     path: '/auth/login',
-    tags: ['auth'],
+    tags: ['Auth'],
     responses: createApiResponse(LoginResponseSchema, 'Success'),
     request: {
       body: {
@@ -44,7 +44,7 @@ export const authRouter: Router = (() => {
   authRegistry.registerPath({
     method: 'post',
     path: '/auth/register',
-    tags: ['auth'],
+    tags: ['Auth'],
     responses: createApiResponse(RegisterRequestSchema, 'Success'),
     request: {
       body: {
@@ -56,6 +56,9 @@ export const authRouter: Router = (() => {
           },
         },
       },
+    },
+    headers: {
+      'Access-Control-Allow-Origin': '*',
     },
   });
 
@@ -69,7 +72,7 @@ export const authRouter: Router = (() => {
   authRegistry.registerPath({
     method: 'post',
     path: '/auth/loginWeb',
-    tags: ['auth'],
+    tags: ['Auth'],
     responses: createApiResponse(LoginRequestSchema, 'Success'),
     request: {
       body: {
@@ -92,7 +95,7 @@ export const authRouter: Router = (() => {
   authRegistry.registerPath({
     method: 'post',
     path: '/auth/check-account-existed',
-    tags: ['auth'],
+    tags: ['Auth'],
     responses: createApiResponse(CheckAccountRequestSchema, 'Success'),
     request: {
       body: {
@@ -115,7 +118,7 @@ export const authRouter: Router = (() => {
   authRegistry.registerPath({
     method: 'post',
     path: '/auth/refreshToken',
-    tags: ['auth'],
+    tags: ['Auth'],
     responses: createApiResponse(RefreshTokenRequestSchema, 'Success'),
     request: {
       body: {
