@@ -7,7 +7,7 @@ import { ServiceResponse } from '@/common/models/serviceResponse';
 import { ResponseStatus } from '@/enums';
 import { logger } from '@/server';
 
-import { User } from '../user/userModel';
+import { User } from '../user';
 
 export const authService = {
   login: async (email: string, password: string): Promise<ServiceResponse<ILoginResponse>> => {
@@ -33,8 +33,10 @@ export const authService = {
         );
       }
 
-      const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET || 'default_secret', { expiresIn: '1d' });
-      const refreshToken = jwt.sign({ _id: user._id }, process.env.JWT_SECRET || 'default_secret', { expiresIn: '2d' });
+      const payload = { id: user.IdUser };
+
+      const token = jwt.sign(payload, process.env.JWT_SECRET || 'default_secret', { expiresIn: '1d' });
+      const refreshToken = jwt.sign(payload, process.env.JWT_SECRET || 'default_secret', { expiresIn: '2d' });
 
       return new ServiceResponse<ILoginResponse>(
         ResponseStatus.Success,
@@ -89,8 +91,8 @@ export const authService = {
       }
 
       const tokenResponse = {
-        token: jwt.sign({ _id: user._id }, process.env.TOKEN_SECRET || 'default_secret', { expiresIn: '1d' }),
-        refreshToken: jwt.sign({ _id: user._id }, process.env.TOKEN_SECRET || 'default_secret', {
+        token: jwt.sign({ id: user.IdUser }, process.env.TOKEN_SECRET || 'default_secret', { expiresIn: '1d' }),
+        refreshToken: jwt.sign({ id: user.IdUser }, process.env.TOKEN_SECRET || 'default_secret', {
           expiresIn: '2d',
         }),
       };
@@ -113,9 +115,12 @@ export const authService = {
     }
   },
 
-  register: async (req: IRegisterRequest): Promise<ServiceResponse<typeof User | IRegisterResponse>> => {
+  register: async (req: IRegisterRequest): Promise<ServiceResponse<IRegisterResponse>> => {
     try {
-      const { name, email, password, confirmPassword } = req;
+      const name: string = req.name;
+      const email: string = req.email;
+      const password: string = req.password;
+      const confirmPassword: string = req.confirmPassword;
       const checkEmailExist = await userRepository.findByEmailAsync(email);
       if (checkEmailExist) {
         return new ServiceResponse<IRegisterResponse>(
@@ -124,29 +129,39 @@ export const authService = {
           undefined,
           StatusCodes.UNPROCESSABLE_ENTITY
         );
-      }
+      } else {
+        if (password !== confirmPassword) {
+          return new ServiceResponse<IRegisterResponse>(
+            ResponseStatus.Failed,
+            'Passwords do not match',
+            undefined,
+            StatusCodes.UNPROCESSABLE_ENTITY
+          );
+        }
 
-      if (password !== confirmPassword) {
-        return new ServiceResponse<IRegisterResponse>(
-          ResponseStatus.Failed,
-          'Passwords do not match',
-          undefined,
-          StatusCodes.UNPROCESSABLE_ENTITY
+        const salt = await bcrypt.genSalt(10);
+        const hashPassword = await bcrypt.hash(password, salt);
+        const newUser = userRepository.createUserAsync({
+          name,
+          email,
+          password: hashPassword,
+          Role: 'client-user',
+          phoneNumber: '',
+          Date: '',
+          Gender: '',
+          Avatar: '',
+          age: '',
+          createAt: new Date(),
+          updatedAt: new Date(),
+          IdDoctor: '',
+        });
+        return new ServiceResponse<any>(
+          ResponseStatus.Success,
+          'User registered successfully',
+          newUser,
+          StatusCodes.OK
         );
       }
-
-      const salt = await bcrypt.genSalt(10);
-      const hashPassword = await bcrypt.hash(password, salt);
-
-      const newUser = userRepository.createUserAsync({
-        name,
-        email,
-        password: hashPassword,
-        Role: 'client-user',
-        createAt: new Date(),
-        updatedAt: new Date(),
-      });
-      return new ServiceResponse<any>(ResponseStatus.Success, 'User registered successfully', newUser, StatusCodes.OK);
     } catch (ex) {
       const errorMessage = `Error during registration: ${(ex as Error).message}`;
       logger.error(errorMessage);

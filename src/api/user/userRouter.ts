@@ -1,80 +1,120 @@
-import { OpenAPIRegistry } from '@asteasolutions/zod-to-openapi';
 import express, { Request, Response, Router } from 'express';
-import { z } from 'zod';
 
-import { GetUserByTokenSchema, GetUserSchema, UpdateUserSchema, UserSchema } from '@/api/user/userModel';
 import { userService } from '@/api/user/userService';
-import { createApiResponse } from '@/api-docs/openAPIResponseBuilders';
-import { handleServiceResponse } from '@/common/utils/httpHandlers';
+import { getDecodedToken, handleServiceResponse, validateRequest } from '@/common/utils/httpHandlers';
+import { logger } from '@/server';
 
-export const userRegistry = new OpenAPIRegistry();
-
-userRegistry.register('User', UserSchema);
-
+/**
+ * @swagger
+ * tags:
+ *   name: User
+ *   description: User management and operations
+ */
 export const userRouter: Router = (() => {
   const router = express.Router();
 
-  userRegistry.registerPath({
-    method: 'get',
-    path: '/users',
-    tags: ['User'],
-    responses: createApiResponse(z.array(UserSchema), 'Success'),
-  });
-
-  router.get('/', async (_req: Request, res: Response) => {
+  /**
+   * @openapi
+   * /users/:
+   *   get:
+   *     tags:
+   *       - User
+   *     summary: Retrieve a list of users
+   *     responses:
+   *       200:
+   *         description: A list of all users.
+   *         content:
+   *           application/json:
+   *             schema:
+   *                 $ref: './UserModal'
+   */
+  router.get('/', validateRequest(), async (_req: Request, res: Response) => {
     const serviceResponse = await userService.findAll();
     handleServiceResponse(serviceResponse, res);
   });
 
-  userRegistry.registerPath({
-    method: 'get',
-    path: '/users/{id}',
-    tags: ['User'],
-    request: { params: GetUserSchema.shape.params },
-    responses: createApiResponse(UserSchema, 'Success'),
-  });
-
-  router.get('/:id', async (req: Request, res: Response) => {
+  /**
+   * @openapi
+   * /users/{id}:
+   *   get:
+   *     tags:
+   *       - User
+   *     summary: Retrieve a single user by ID
+   *     parameters:
+   *       - in: path
+   *         name: id
+   *         required: true
+   *         description: Numeric ID of the user to retrieve.
+   *         schema:
+   *           type: string
+   *     responses:
+   *       200:
+   *         description: A single user.
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: './UserModal'
+   */
+  router.get('/:id', validateRequest(), async (req: Request, res: Response) => {
     const id = req.params.id;
     const serviceResponse = await userService.findById(id);
     handleServiceResponse(serviceResponse, res);
   });
 
-  userRegistry.registerPath({
-    method: 'post',
-    path: '/users/update',
-    tags: ['User'],
-    responses: createApiResponse(UpdateUserSchema, 'Success'),
-    request: {
-      body: {
-        description: 'Create a new doctor',
-        required: true,
-        content: {
-          'application/json': {
-            schema: UpdateUserSchema,
-          },
-        },
-      },
-    },
-  });
-
-  router.post('/update', async (req: Request, res: Response) => {
+  /**
+   * @openapi
+   * /users/update:
+   *   post:
+   *     tags:
+   *       - User
+   *     summary: Update a user's information
+   *     requestBody:
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *             type: object
+   *             properties:
+   *               id:
+   *                 type: string
+   *                 description: The user ID
+   *               dataUser:
+   *                 $ref: './UserModal'
+   *     responses:
+   *       200:
+   *         description: User updated.
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: './UserModal'
+   */
+  router.post('/update', validateRequest(), async (req: Request, res: Response) => {
     const { id, dataUser } = req.body;
     const serviceResponse = await userService.updateInfo(id, dataUser);
     handleServiceResponse(serviceResponse, res);
   });
 
-  userRegistry.registerPath({
-    method: 'get',
-    path: '/users/info',
-    tags: ['User'],
-    request: { params: GetUserByTokenSchema.shape.params },
-    responses: createApiResponse(UserSchema, 'Success'),
-  });
-
-  router.get('/info', async (req: Request, res: Response) => {
-    const token = req.headers.authorization?.replace('Bearer ', '') as string;
-    const serviceResponse = await userService.findByToken(token);
+  /**
+   * @openapi
+   * /users/info:
+   *   get:
+   *     tags:
+   *       - User
+   *     summary: Retrieve user information by token
+   *     responses:
+   *       200:
+   *         description: User information retrieved.
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: './UserModal'
+   */
+  router.get('/info', validateRequest(), async (req: Request, res: Response) => {
+    const authHeader = req.headers.authorization;
+    const token = authHeader && authHeader.startsWith('Bearer ') ? authHeader.split(' ')[1] : null;
+    logger.info(`Bearer Token: ${token}`);
+    const decoded = getDecodedToken(token as string);
+    const serviceResponse = await userService.findById(decoded?.id);
     handleServiceResponse(serviceResponse, res);
   });
 

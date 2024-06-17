@@ -1,5 +1,4 @@
 import bcrypt from 'bcryptjs';
-import { ObjectId } from 'mongodb';
 
 import { User, UserType } from '@/api/user/userModel';
 
@@ -8,15 +7,15 @@ export const userRepository = {
     return User.find();
   },
 
-  findByIdAsync: async (id: string): Promise<UserType | null> => {
-    return User.findById(new ObjectId(id));
+  findByIdAsync: async (IdUser: string): Promise<UserType | null> => {
+    return User.findOne({ IdUser });
   },
 
   findByEmailAsync: async (email: string): Promise<UserType | null> => {
     return User.findOne({ email });
   },
 
-  createUserAsync: async (userData: IUser): Promise<any> => {
+  createUserAsync: async (userData: any): Promise<any> => {
     const newUser = new User(userData);
     return newUser.save();
   },

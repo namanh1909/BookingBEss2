@@ -1,5 +1,5 @@
 type IUser = {
-  _id?: string;
+  IdUser: string;
   password?: string;
   name?: string;
   email?: string;

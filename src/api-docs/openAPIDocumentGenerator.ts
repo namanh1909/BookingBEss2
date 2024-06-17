@@ -1,22 +1,35 @@
-import { OpenApiGeneratorV3, OpenAPIRegistry } from '@asteasolutions/zod-to-openapi';
-
-import { authRegistry } from '@/api/auth/authRouter';
-import { doctorRegistry } from '@/api/doctors/doctorRouter';
-import { userRegistry } from '@/api/user/userRouter';
+import swaggerJsdoc from 'swagger-jsdoc';
 
 export function generateOpenAPIDocument() {
-  const registry = new OpenAPIRegistry([userRegistry, authRegistry, doctorRegistry]);
-  const generator = new OpenApiGeneratorV3(registry.definitions);
+  const options = {
+    definition: {
+      openapi: '3.0.0',
+      info: {
+        version: '1.0.0',
+        title: 'Swagger API',
+      },
+      externalDocs: {
+        description: 'View the raw OpenAPI Specification in JSON format',
+        url: '/swagger.json',
+      },
+      components: {
+        securitySchemes: {
+          bearerAuth: {
+            type: 'http',
+            scheme: 'bearer',
+            bearerFormat: 'JWT',
+          },
+        },
+      },
+      security: [
+        {
+          bearerAuth: [],
+        },
+      ],
+    },
+    apis: ['./src/api/user/userRouter.ts', './src/api/auth/authRouter.ts'],
+  };
 
-  return generator.generateDocument({
-    openapi: '3.0.0',
-    info: {
-      version: '1.0.0',
-      title: 'Swagger API',
-    },
-    externalDocs: {
-      description: 'View the raw OpenAPI Specification in JSON format',
-      url: '/swagger.json',
-    },
-  });
+  const openAPIDocument = swaggerJsdoc(options);
+  return openAPIDocument;
 }

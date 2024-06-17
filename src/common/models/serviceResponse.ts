@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import mongoose from 'mongoose';
 
 import { ResponseStatus } from '@/enums';
 
@@ -16,10 +16,11 @@ export class ServiceResponse<T = null> {
   }
 }
 
-export const ServiceResponseSchema = <T extends z.ZodTypeAny>(dataSchema: T) =>
-  z.object({
-    success: z.boolean(),
-    message: z.string(),
-    responseObject: dataSchema.optional(),
-    statusCode: z.number(),
-  });
+export const serviceResponseSchema = new mongoose.Schema({
+  success: { type: Boolean, required: true },
+  message: { type: String, required: true },
+  responseObject: { type: mongoose.Schema.Types.Mixed, required: false },
+  statusCode: { type: Number, required: true },
+});
+
+export const ServiceResponseModel = mongoose.model('ServiceResponse', serviceResponseSchema);

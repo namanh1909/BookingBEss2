@@ -1,26 +1,28 @@
-import { z } from 'zod';
+import mongoose from 'mongoose';
 
-export const LoginResponseSchema = z.object({
-  token: z.string(),
-  refreshToken: z.string(),
+const { Schema } = mongoose;
+
+export const LoginResponseSchema = new Schema({
+  token: { type: String, required: true },
+  refreshToken: { type: String, required: true },
 });
 
-export const LoginRequestSchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(6),
+export const LoginRequestSchema = new Schema({
+  email: { type: String, required: true, match: [/.+@.+\..+/, 'Please fill a valid email address'] },
+  password: { type: String, required: true, minlength: 6 },
 });
 
-export const RegisterRequestSchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(6),
-  name: z.string(),
-  confirmPassword: z.string(),
+export const RegisterRequestSchema = new Schema({
+  email: { type: String, required: true, match: [/.+@.+\..+/, 'Please fill a valid email address'] },
+  password: { type: String, required: true, minlength: 6 },
+  name: { type: String, required: true },
+  confirmPassword: { type: String, required: true },
 });
 
-export const CheckAccountRequestSchema = z.object({
-  email: z.string().email(),
+export const CheckAccountRequestSchema = new Schema({
+  email: { type: String, required: true, match: [/.+@.+\..+/, 'Please fill a valid email address'] },
 });
 
-export const RefreshTokenRequestSchema = z.object({
-  email: z.string().email(),
+export const RefreshTokenRequestSchema = new Schema({
+  email: { type: String, required: true, match: [/.+@.+\..+/, 'Please fill a valid email address'] },
 });

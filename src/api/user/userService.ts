@@ -1,7 +1,8 @@
 import { StatusCodes } from 'http-status-codes';
-import jwt from 'jsonwebtoken';
+import { JwtPayload } from 'jsonwebtoken';
+import { jwtDecode } from 'jwt-decode';
 
-import { UserType } from '@/api/user/userModel';
+import { User, UserType } from '@/api/user/userModel';
 import { userRepository } from '@/api/user/userRepository';
 import { ServiceResponse } from '@/common/models/serviceResponse';
 import { ResponseStatus } from '@/enums';
@@ -30,6 +31,7 @@ export const userService = {
       if (!user) {
         return new ServiceResponse(ResponseStatus.Failed, 'User not found', undefined, StatusCodes.NOT_FOUND);
       }
+
       return new ServiceResponse<typeof user>(ResponseStatus.Success, 'User found', user, StatusCodes.OK);
     } catch (ex) {
       const errorMessage = `Error finding user with id ${id}:, ${(ex as Error).message}`;
@@ -40,12 +42,20 @@ export const userService = {
 
   findByToken: async (token: string): Promise<ServiceResponse<UserType | undefined>> => {
     try {
-      const decoded: any = jwt.verify(token, process.env.JWT_SECRET || 'default_secret');
-      const user = await userRepository.findByIdAsync(decoded.id);
-      if (!user) {
-        return new ServiceResponse(ResponseStatus.Failed, 'User not found', undefined, StatusCodes.NOT_FOUND);
+      const decoded = jwtDecode<JwtPayload>(token);
+      logger.info('decoded', decoded?.id);
+
+      if (decoded?.id) {
+        const user = await User.findOne({ IdUser: decoded?.id });
+
+        if (!user) {
+          return new ServiceResponse(ResponseStatus.Failed, 'User not found', undefined, StatusCodes.NOT_FOUND);
+        }
+        return new ServiceResponse(ResponseStatus.Success, 'User found', user, StatusCodes.NOT_FOUND);
       }
-      return new ServiceResponse<typeof user>(ResponseStatus.Success, 'User found', user, StatusCodes.OK);
+      logger.info('error');
+
+      return new ServiceResponse(ResponseStatus.Failed, 'User not found', undefined, StatusCodes.NOT_FOUND);
     } catch (ex) {
       const errorMessage = `Error finding user by token: ${(ex as Error).message}`;
       logger.error(errorMessage);
